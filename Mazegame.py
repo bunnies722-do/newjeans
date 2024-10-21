@@ -18,6 +18,26 @@ class Player(FirstPersonController):
             position = (0,0,0)
         )
 
+class Warp(Entity):
+    def __init__(self, i, j):
+        super().__init__(
+            warp = Entity(
+                model = 'cube',
+                scale = (5 ,5 ,5),
+                position = (i * 5, 1, j * 5),
+                collider = 'box',
+                texture = 'images/wall.jpg'
+            )
+        )
+        self.a = player
+
+    def update(self):
+        self.abcd()
+
+    def abcd(self):
+        if warp.intersects(self.a):
+            self.a.position = (95, 3, 90)
+
 class Exit(Entity):
     def __init__(self, i, j):
         super().__init__(
@@ -78,7 +98,7 @@ MAP = [
     [11,12,13,14,15,16,17,18,__,20,22,22,22,22,23,__,25,__,27,28,29,30,__,33,33,__,33,22,33],
     [11,12,13,14,15,16,17,18,__,20,22,22,22,22,23,__,__,__,27,__,__,30,__,33,__,__,__,__,33],
     [11,12,13,14,15,16,17,18,__,20,22,22,22,22,23,24,25,26,27,28,__,__,__,33,__,22,33,__,33],
-    [11,12,13,14,15,16,17,18,__,20,22,22,22,22,23,24,25,26,27,28,29,30,__,__,__,__,33,__,33],
+    [11,12,13,14,15,16,17,18,__,20,22,22,22,22,23,24,25,26,27,28,29,30,__,__,__,__,33,'w',33],
     [11,12,13,14,15,16,17,18,19,20,22,22,22,22,23,24,25,26,27,28,29,30,31,33,33,22,33,'p',33]
     
 ]
@@ -97,6 +117,11 @@ for i in range(len(MAP)):
             if MAP[i][j] =='d':
                 duck.position = (i * 5, 0, j * 5)
                 continue
+
+            if MAP[i][j] == 'w':
+                warp = Warp(i, j)
+                continue
+
             wall = Entity(
                 model = 'cube',
                 #color = color.red,
